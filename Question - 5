@@ -1,0 +1,34 @@
+Take an array, generate a random number less than or equal to the array's length, and print the next three elements(in series) starting from that
+index. If the random number corresponds to the last element of the array, print the next three elements from the beginning of the array (0th index).
+
+------------------------------------------------------
+
+import java.util.Random;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        int[] arr = {10, 20, 30, 40, 50, 60, 70, 80};
+
+        Random random = new Random();
+
+        int index = random.nextInt(arr.length);
+
+        System.out.println("Random Index = " + index);
+        System.out.print("Next Three Elements: ");
+
+        for (int i = 1; i <= 3; i++) {
+
+            int nextIndex = index + i;
+
+            if (nextIndex >= arr.length) {
+                nextIndex = nextIndex - arr.length;
+            }
+
+            System.out.print(arr[nextIndex] + " ");
+        }
+    }
+}
+
+
