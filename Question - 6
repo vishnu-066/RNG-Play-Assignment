@@ -1,0 +1,123 @@
+Generate a 3x5 matrix using elements selected sequentially from the
+array, starting with a randomly chosen element. If the element "FF" appears
+more than four times in the matrix, create a new matrix that retains the "FF"
+elements in their previous positions. If "FF" appears in the new position that
+was not in the previous matrix, repeat the process. Continue this process
+until "FF" no longer appears in a new position in the matrix or the matrix is
+filled with "FF".
+arr1: [“AA”, “CC”, “FF”, “DD”, “MM”, “XX”, “ZZ”, “BB”, “FF”, “WW”, “CC”,
+“GG”, HH]
+
+--------------------------------------------------------------
+
+import java.util.Random;
+
+public class Main {
+
+    static boolean isFF(String value) {
+        return value.equals("FF");
+    }
+
+    static void printMatrix(String[][] matrix) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 5; j++) {
+                System.out.print(matrix[i][j] + "\t");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+
+        String[] arr = {
+                "AA","CC","FF","DD","MM","XX",
+                "ZZ","BB","FF","WW","CC","GG","HH"
+        };
+
+        Random random = new Random();
+
+        int index = random.nextInt(arr.length);
+
+        String[][] matrix = new String[3][5];
+
+        int current = index;
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 5; j++) {
+
+                matrix[i][j] = arr[current];
+
+                current++;
+
+                if (current == arr.length)
+                    current = 0;
+            }
+        }
+
+        System.out.println("Initial Matrix:");
+        printMatrix(matrix);
+
+        while (true) {
+
+            int ffCount = 0;
+
+            boolean[][] fixed = new boolean[3][5];
+
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 5; j++) {
+
+                    if (isFF(matrix[i][j])) {
+                        fixed[i][j] = true;
+                        ffCount++;
+                    }
+                }
+            }
+
+            if (ffCount <= 4)
+                break;
+
+            if (ffCount == 15)
+                break;
+
+            String[][] newMatrix = new String[3][5];
+
+            boolean newFF = false;
+
+            for (int i = 0; i < 3; i++) {
+
+                for (int j = 0; j < 5; j++) {
+
+                    if (fixed[i][j]) {
+
+                        newMatrix[i][j] = "FF";
+
+                    } else {
+
+                        newMatrix[i][j] = arr[current];
+
+                        if (isFF(newMatrix[i][j]))
+                            newFF = true;
+
+                        current++;
+
+                        if (current == arr.length)
+                            current = 0;
+                    }
+                }
+            }
+
+            matrix = newMatrix;
+
+            System.out.println();
+            System.out.println("New Matrix:");
+            printMatrix(matrix);
+
+            if (!newFF)
+                break;
+        }
+
+        System.out.println();
+        System.out.println("Final Matrix:");
+        printMatrix(matrix);
+    }
+}
