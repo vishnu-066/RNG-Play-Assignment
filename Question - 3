@@ -1,0 +1,64 @@
+Calculate the sum and average(up to 2 digits) of four random elements selected from the array. If a zero is selected at any point, stop choosing
+random elements and print the sum up to that point. arr: [200, 400, 250, 350, 0, 32, 20, 675, 0, 0, 100, 1000]
+
+--------------------------------------------------------------------------------------------
+
+import java.util.Random;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        int[] arr = {200, 400, 250, 350, 0, 32, 20, 675, 0, 0, 100, 1000};
+
+        Random random = new Random();
+
+        
+        for (int i = arr.length - 1; i > 0; i--) {
+
+            int j = random.nextInt(i + 1);
+
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+
+        int sum = 0;
+        int count = 0;
+
+        System.out.print("Selected Elements: ");
+
+        for (int i = 0; i < 4; i++) {
+
+            System.out.print(arr[i] + " ");
+
+            if (arr[i] == 0) {
+                break;
+            }
+
+            sum += arr[i];
+            count++;
+        }
+
+        System.out.println();
+        System.out.println("Sum = " + sum);
+
+        if (count > 0) {
+
+            int scaledAverage = (sum * 100) / count;
+            int whole = scaledAverage / 100;
+            int fraction = scaledAverage % 100;
+
+            System.out.print("Average = " + whole + ".");
+
+            if (fraction < 10) {
+                System.out.println("0" + fraction);
+            } else {
+                System.out.println(fraction);
+            }
+
+        } else {
+            System.out.println("Average = 0.00");
+        }
+    }
+}
